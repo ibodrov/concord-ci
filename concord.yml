@@ -1,0 +1,19 @@
+configuration:
+  dependencies:
+    - "mvn://com.walmartlabs.concord.plugins:git:1.22.0"
+
+flows:
+  default:
+    - task: git
+      in:
+        action: clone
+        url: "https://github.com/jvanzyl/test.git"
+        workingDir: "repo"
+
+    - task: docker
+      in:
+        image: "jvanzyl/concord-ci:0.0.3"
+        cmd: |
+          cd repo
+          mvn -v
+          mvn -s /workspace/settings.xml -B clean install -DskipTests
