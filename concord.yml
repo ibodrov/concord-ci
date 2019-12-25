@@ -10,10 +10,13 @@ flows:
         url: "https://github.com/jvanzyl/test.git"
         workingDir: "repo"
 
-    - task: docker
-      in:
-        image: "jvanzyl/concord-ci:0.0.3"
-        cmd: |
-          cd repo
-          mvn -v
-          mvn -s /workspace/settings.xml -B clean install -DskipTests
+    - docker: "jvanzyl/concord-ci:0.0.3"
+      cmd: |
+        cd repo
+        mvn -v
+        mvn -s /workspace/settings.xml -B clean install -DskipTests
+
+    - docker: "library/docker:stable"
+      cmd: |
+        export DOCKER_HOST=tcp://localhost:6666
+        docker ps -a
